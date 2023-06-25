@@ -1,0 +1,29 @@
+{
+  "name": "product-service",
+  "version": "1.0.0",
+  "description": "This service will work for the validation of valid user",
+  "main": "src/index.js",
+  "author": "Prafull37",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.350.0",
+    "@aws-sdk/s3-request-presigner": "^3.350.0",
+    "cookie-parser": "^1.4.6",
+    "cookies": "^0.8.0",
+    "csrf": "^3.1.0",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "multer": "^1.4.5-lts.1",
+    "pg": "^8.11.0",
+    "uuid": "^9.0.0"
+  },
+  "scripts": {
+    "start:local": "nodemon src/index.js",
+    "start": "node src/index.js"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}
