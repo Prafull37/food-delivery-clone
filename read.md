@@ -1,11 +1,20 @@
 https://medium.com/@ravindersengar/end-to-end-design-of-a-food-delivery-app-like-zomato-or-swiggy-52b96f3a635f
 
+### Items and Catalogue Review State 
+![Review State](<Screenshot 2023-06-28 at 1.44.31 AM.png>)
 
-TODO
-1. Setup ESlint
-2. Setup prettifier
+### Items and Catalogue  State 
+![Item/Catalogue State](image.png)
 
 
-Product Service
---> Pending Error Handling
---> Auth
+# Pending items
+## Project TODOs
+[] Setup ESlint
+[] Setup prettifier
+
+
+### Product Service
+[] Pending Error Handling
+[] Auth and Permission
+[] CloudFront Integration
+[] Deployment

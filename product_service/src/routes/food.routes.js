@@ -59,6 +59,7 @@ ProductRoute.route('/restaurant/item/:id').get(
 .delete(FoodController.deleteAItem);
 
 ProductRoute.route('/getItems/restaurant').get(FoodController.getAllItemInARestaurant);
+ProductRoute.route('/items/approve',FoodController.approveItems);
 
 
 export default ProductRoute;
