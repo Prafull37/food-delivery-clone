@@ -13,9 +13,10 @@ export const createConnection=async ()=>{
 }
 
 
-export const query=async (queryString,queryParams)=>{
+export const query=async (queryString,queryParams=[])=>{
    const res= await client.query(queryString,queryParams);
-   return res.rows;
+    const rows = res.rows;
+    return rows.length >1 ? rows[0]:rows
 };
 
 
@@ -47,3 +48,9 @@ export const getColumnsKeysAndValues=(columns)=>{
      },{columns:[],values:[]})
 }
 
+
+export  function expand(rowCount, columnCount, startAt=1){
+    var index = startAt
+    return Array(rowCount).fill(0).map(v => `(${Array(columnCount).fill(0).map(v => `$${index++}`).join(", ")})`).join(", ")
+  }
+  

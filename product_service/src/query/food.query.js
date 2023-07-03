@@ -9,7 +9,7 @@ class FoodQuery{
 
         const queryString =`INSERT INTO food_table(${columns.join(",")}) VALUES (${getValuesStringInPostgresQuery(columns)}) RETURNING * `;
         const response = await query(queryString,values);
-        return response[0];
+        return response;
     }
 
     static async getItem(matcher){
@@ -18,8 +18,7 @@ class FoodQuery{
         const matcherArray = getValueForUpdateInPostgressQuery(columns)
         const queryString= `SELECT * FROM food_table WHERE ${matcherArray.join(' AND ')}`;
         const response = await query(queryString,values);
-        const responseLength = response.length;
-        return responseLength>1 ? response.slice(0,responseLength):response[0];
+        return response;
     }
 
     static async updateAItem(body,matcher){
@@ -32,7 +31,7 @@ class FoodQuery{
         const matcherArray = getValueForUpdateInPostgressQuery(matcherColumns,valuesLength)
         const queryString= `UPDATE  food_table SET  ${columnsForUpdate.join(",")} WHERE ${matcherArray.join(" AND ")} RETURNING *`;
         const response = await query(queryString,[...values,...matcherValues]);
-        return response[0];
+        return response;
     }
 }
 
