@@ -1,6 +1,6 @@
 
 import ReviewModal from "../modal/review.modal.js";
-import { expand, getColumnsKeysAndValues, getValueForUpdateInPostgressQuery, getValuesStringInPostgresQuery, query } from "../database/pg.js";
+import { expand, formatValueForArrayForBulkSearch, getColumnsKeysAndValues, getValueForUpdateInPostgressQuery, getValuesStringInPostgresQuery, query } from "../database/pg.js";
 
 class ReviewQuery{
     static async createAReview(body){
@@ -9,7 +9,7 @@ class ReviewQuery{
 
         const queryString =`INSERT INTO reviewstatus(${columns.join(",")}) VALUES (${getValuesStringInPostgresQuery(columns)}) RETURNING * `;
         const response = await query(queryString,values);
-        return response;
+        return ReviewModal.fromParser(response);
     }
 
     static async createReviews(body){
@@ -26,7 +26,7 @@ class ReviewQuery{
         const flattenValues = valuesToAdd.flat();
         const queryString = `INSERT INTO reviewstatus(${columns.join(",")}) VALUES ${valuesArray} RETURNING *`;
         const response = await query(queryString,flattenValues);
-        return response; 
+        return ReviewModal.fromParser(response); 
     }
 
     static async getAReview(matcher){
@@ -35,25 +35,27 @@ class ReviewQuery{
         const matcherArray = getValueForUpdateInPostgressQuery(columns)
         const queryString =`SELECT * FROM reviewstatus WHERE ${matcherArray.join(' AND ')}`;
         const response = await query(queryString,values);
-        return response[0];
+        return ReviewModal.fromParser(response);
     }
 
     static async getReviews(items,matchingKey){
-        const queryString= `SELECT * FROM reviewstatus WHERE $1 in $2`;
-        const response = await query(queryString,[matchingKey,items]);
-        return response
+        const getAllReviews = matchingKey === 'all'
+
+        const queryString= getAllReviews ?   `SELECT * FROM reviewstatus`:`SELECT * FROM reviewstatus WHERE ${matchingKey} in ${formatValueForArrayForBulkSearch(items)}`
+        const response = await query(queryString);
+        return ReviewModal.fromParser(response)
     }
 
-    static async deleteAReview(items, matchingKey){
-      const queryString = `DELETE FROM reviewstatus WHERE $1 = $2`
-      const response = await query(queryString,[matchingKey,items]);
-      return response
+    static async deleteAReview(item, matchingKey){
+      const queryString = `DELETE FROM reviewstatus WHERE ${matchingKey}='${item}' AND EXISTS(SELECT ${matchingKey} FROM reviewstatus WHERE ${matchingKey}='${item}')`
+      const response = await query(queryString);
+      return ReviewModal.fromParser(response)
     }
 
     static async deleteReviews(items, matchingKey){
-        const queryString = `DELETE FROM reviewstatus WHERE $1 in $2`
-        const response = await query(queryString,[matchingKey,items]);
-        return response
+        const queryString = `DELETE FROM reviewstatus WHERE ${matchingKey} in  ${formatValueForArrayForBulkSearch(items)} and EXISTS (SELECT * FROM reviewstatus WHERE ${matchingKey} in ${formatValueForArrayForBulkSearch(items)})`
+        const response = await query(queryString);
+        return ReviewModal.fromParser(response)
       }
   
     static async updateAReview(body,matcher){
@@ -66,7 +68,7 @@ class ReviewQuery{
         const matcherArray = getValueForUpdateInPostgressQuery(matcherColumns,valuesLength)
         const queryString= `UPDATE  reviewstatus SET  ${columnsForUpdate.join(",")} WHERE ${matcherArray.join(" AND ")} RETURNING *`;
         const response = await query(queryString,[...values,...matcherValues]);
-        return response;
+        return ReviewModal.fromParser(response);
     }
 }
 

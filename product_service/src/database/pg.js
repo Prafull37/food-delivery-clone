@@ -16,7 +16,7 @@ export const createConnection=async ()=>{
 export const query=async (queryString,queryParams=[])=>{
    const res= await client.query(queryString,queryParams);
     const rows = res.rows;
-    return rows.length >1 ? rows[0]:rows
+    return rows.length >1 ? rows:rows[0]
 };
 
 
@@ -54,3 +54,10 @@ export  function expand(rowCount, columnCount, startAt=1){
     return Array(rowCount).fill(0).map(v => `(${Array(columnCount).fill(0).map(v => `$${index++}`).join(", ")})`).join(", ")
   }
   
+export function formatValueForArrayForBulkSearch(items){
+    let startString = '(',
+        endString = ')';
+    
+    return `${startString}${items.map((item)=>`'${item}'`)}${endString}`;
+
+}

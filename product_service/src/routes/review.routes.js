@@ -11,19 +11,19 @@ ReviewRouter.route('/review-status')
 
 
 
-ReviewRouter.route('review-status/bulk')
+ReviewRouter.route('/bulk/review-status')
                     .post(ReviewController.createNewReviewForMultipleItems)
-                    .get(ReviewController.getReviews)
                     .delete(ReviewController.deleteReviews)
 
+ReviewRouter.post('/get/bulk/review-status/' ,ReviewController.getReviews)
 
 
 
 ReviewRouter.put('/start/a/item-review',ReviewController.startReviewForAItem);
 ReviewRouter.put('/draft/a/item-review',ReviewController.draftAReview);
 ReviewRouter.put('/reject/a/item',ReviewController.rejectAItem);
-ReviewRouter.put('update/a/item-review-status',ReviewController.updateAItemReview);
-ReviewRouter.put('complete/a/item-review',ReviewController.completeAItemReview)
+ReviewRouter.put('/update/a/item-review-status',ReviewController.updateAItemReview);
+ReviewRouter.put('/complete/a/item-review',ReviewController.completeAItemReview)
 
 
 export default ReviewRouter;

@@ -22,20 +22,16 @@ export function size(collection){
         return collection.length
     }
     if(isObject(collection)){
-        keys(collection).length
+        return keys(collection).length
     }
    return 0;
 }
 
 export function isEmpty(collection){
     if(collection === null || collection === undefined) return true;
-    if( isString(collection) || isArray(collection)){
-        return size(collection)===0
-    }
-    if(isObject(collection)){
-        return keys(collection).length
-    }
-    return false;
+    
+    return size(collection)===0;
+    
 }
 
 
