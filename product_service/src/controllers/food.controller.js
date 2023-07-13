@@ -1,8 +1,13 @@
 import {v4 as uuidV4} from 'uuid';
 
+import axios from 'axios';
+
 import AWSUploader from "../config/cloud/aws/aws.config.js";
 import FoodQuery from "../query/food.query.js";
 import { generateFileNameFromFileObject, getFileName } from "../utils/fileUtils.js";
+import itemStateMachine from '../helpers/itemStateMachine/item.machine.js';
+
+import ReviewCotroller from './review.controller.js'
 
 class FoodController{
        static async createANewItem(req,res,next){
@@ -17,6 +22,8 @@ class FoodController{
                      const filename = doesFileExists ? getFileName(updatedFileObject):'';
                      
                      doesFileExists && await AWSUploader.uploadToS3(updatedFileObject);
+                     
+                     const itemStatus = itemStateMachine.getInitialState();
 
                      const updatedDetails={
                             ...body,
@@ -26,16 +33,24 @@ class FoodController{
                             createdTime:new Date(Date.now()).toISOString(),
                             filename:filename,
                             id:uuidV4(),
+                            itemStatus
                      }
-
+                     
                      const updatedData = await FoodQuery.createNewItem(updatedDetails);
-                     const {filename:updatedFileName,...restFileName} = updatedData;
+                     const {filename:updatedFileName,id} = updatedData;
                      const presigendUrl = doesFileExists ? await AWSUploader.getAwsPresignedUrl(updatedFileName):'';
-              
-                     return res.send({
-                            data:{...updatedData,fileUrl:presigendUrl},
-                     });
+                     const baseUrl = `${req.protocol}://${req.headers.host}`
+                     try{
+                            const reviewResponse = await axios.post(`${baseUrl}/reviews/review-status/`,{itemId:id})
+                            const {id:reviewId,reviewStatus} = reviewResponse.data.data;
+                            return res.send({
+                                   data:{...updatedData,fileUrl:presigendUrl,reviewId,reviewStatus},
+                            });
+                      }catch(e){
+                            next(e)
+                      }
               }catch(e){
+                     console.log(e)
                      next(e);
               }   
        } 
@@ -119,6 +134,8 @@ class FoodController{
               }
 
               await FoodQuery.updateAItem(body,{id,restaurantid:restaurantId,restaurantownerid:restaurantOwnerId});
+              const baseUrl = `${req.protocol}://${req.headers.host}`
+              await axios.delete(`${baseUrl}/reviews/review-status/`,{data:{itemId:id}})
 
               return res.send({message:"Deleted sucessfully"});
           }

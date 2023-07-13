@@ -23,6 +23,7 @@ class FoodModal{
             updatedby:body.updatedBy || null,
             permanentlydeleted:body.permanentlyDeleted ||  null,
             permanentlydeletedby:body.permanentlyDeletedBy|| null,
+            itemStatus:body.itemstatus || null,
         }
     }
     

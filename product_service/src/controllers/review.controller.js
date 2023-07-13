@@ -91,7 +91,7 @@ class ReviewController{
             const {itemId,id} = req.body;
 
             if(isEmpty(itemId) && isEmpty(id)){
-                const error =  new Error('itemId and id is not specified in query param');
+                const error =  new Error('itemId and id is not specified in body');
                 error.statusCode = 405
                 throw error;
               }
