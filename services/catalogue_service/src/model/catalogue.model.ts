@@ -1,0 +1,4 @@
+interface CatalogueModel{
+    id:string,
+    
+}

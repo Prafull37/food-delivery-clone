@@ -1,0 +1,31 @@
+{
+  "name": "catalogue_service",
+  "version": "0.0.0",
+  "description": "This Service will handle CRUD operation on catalogue and adding items to catalogue.",
+  "main": "src/index.ts",
+  "license": "MIT",
+  "scripts": {
+    "start:local": "concurrently \"npx tsc --watch\" \"nodemon -q dist/index.js\"",
+    "lint": "eslint . --ext .ts",
+    "lint-and-fix": "eslint . --ext .ts --fix",
+    "prettier-format": "prettier --config .prettierrc 'src/**/*.ts' --write"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.17",
+    "@types/node": "^20.4.2",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "concurrently": "^8.2.0",
+    "eslint": "^8.45.0",
+    "nodemon": "^3.0.1",
+    "prettier": "3.0.0",
+    "typescript": "^5.1.6"
+  },
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "eslint-plugin-prettier": "^5.0.0",
+    "express": "^4.18.2",
+    "knex": "^2.5.1",
+    "pg": "^8.11.1"
+  }
+}
