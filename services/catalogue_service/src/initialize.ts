@@ -3,11 +3,12 @@ import * as dotEnv from 'dotenv';
 
 import { Application } from "express";
 import CatalogueRouter from "./route/catalogue";
+import { Knex } from "knex";
 
 dotEnv.config();
 
 
-let knex;
+let knex:Knex;
 
 const PORT = process.env.PORT || 5002;
 
@@ -31,4 +32,6 @@ async function initalize(app:Application){
     })
 }
 
-export default initalize;
+
+
+export  {knex,initalize as default};

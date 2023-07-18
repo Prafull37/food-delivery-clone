@@ -11,6 +11,8 @@ const CatalogueRouter  = express.Router();
 
 CatalogueRouter.route('/')
                 .post(CatalogueController.createACatalogue)
+                .get(CatalogueController.getACatalogue)
+                .put(CatalogueController.updateACatalogue)
 
 
 
@@ -27,6 +29,8 @@ export default CatalogueRouter;
  *  - createdBy
  *  - createdOn
  *  - updatedOn
+ *  - restaurantId
+ *  - restaurantOwnerId
  * 
  * 
  * 
