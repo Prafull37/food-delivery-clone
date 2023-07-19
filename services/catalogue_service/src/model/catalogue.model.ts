@@ -1,9 +1,4 @@
-export enum CategoryStatus{
-    IN_DRAFT='IN_DRAFT',
-    REVIEWING='REVIEWING',
-    PUBLISHED='PUBLISHED',
-    DELETED='DELETED'
-}
+import {CategoryStatus} from '../constants/categoryStatus.constants'
 
 export interface CatalogueInterface{
     readonly id:string,

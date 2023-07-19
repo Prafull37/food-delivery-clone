@@ -13,6 +13,13 @@ CatalogueRouter.route('/')
                 .post(CatalogueController.createACatalogue)
                 .get(CatalogueController.getACatalogue)
                 .put(CatalogueController.updateACatalogue)
+                .delete(CatalogueController.deleteACatalogue)
+
+CatalogueRouter.post('/on-review',CatalogueController.onReview)
+CatalogueRouter.post('/on-complete',CatalogueController.onComplete)
+CatalogueRouter.post('/on-delete',CatalogueController.onDelete)
+CatalogueRouter.post('/on-start-review',CatalogueController.onStartReview)
+CatalogueRouter.post('/on-publish',CatalogueController.onPublish)
 
 
 

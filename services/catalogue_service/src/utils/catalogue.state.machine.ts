@@ -1,25 +1,41 @@
 
 type NoOp =()=>void;
-const noop : NoOp=()=>{}
+export const noop : NoOp=()=>{}
 
-interface TransistionState<S extends Record<string,string>> {
+interface TransistionState<S extends string> {
     currentStateOnExit:NoOp,
     nextStateOnEnter:NoOp,
     statusAction:NoOp,
     state:S
 }
 
-interface StateMachine<S extends  Record<string,string>,A extends string>{
-    state:keyof S,
-    getInitialState:()=>keyof S,
-    transistion:(currentState:S,actionType:A)=>TransistionState<S>
+export interface StateMachine<S extends  string,A extends string>{
+    state:S,
+    getInitialState:()=>S,
+    transition:(currentState:S,actionType:A)=>TransistionState<S>|undefined
 }
 
-function createMachine<S extends Record<string,string>, A extends string>(stateConfig:StateMachineConfig<S,A>):StateMachine<S,A>{
+export interface StateMachineConfig<S extends string , A extends string>{
+    initialState:S,
+    [key :string]:{
+        actions:{
+            onEnter:NoOp,
+            onExit:NoOp
+        },
+        transition:{
+            [key:string]:{
+                target:S,
+                action:NoOp
+            }
+        }
+    }
+}
+
+function createMachine<S extends string, A extends string>(stateConfig:StateMachineConfig<S,A>):StateMachine<S,A>{
     return {
         state: stateConfig.initialState,
         getInitialState :()=> stateConfig.initialState,
-        transition:function <S extends Record<string,any>,A extends string>(currentState: keyof Record<string,any>, actionType:string):TransistionState<S>{
+        transition:function <S extends string,A extends string>(currentState: S, actionType:A):TransistionState<S>|undefined{
             const currentStateObject = stateConfig[currentState];
             if(!currentStateObject) return;
 
@@ -48,19 +64,5 @@ function createMachine<S extends Record<string,string>, A extends string>(stateC
 export default createMachine;
 
 
-interface StateMachineConfig<S extends Record<string,string> , A extends string>{
-    initialState:keyof S,
-    [keyof in S]:{
-        actions:{
-            onEnter:NoOp,
-            onExit:NoOp
-        },
-        transition:{
-            [tkey in A]:{
-                target:S,
-                actions:NoOp
-            }
-        }
-    }
-}
+
 
