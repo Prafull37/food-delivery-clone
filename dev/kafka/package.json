@@ -1,0 +1,12 @@
+{
+  "name": "dev_kafka",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "This is for development purpose only. It will create topics in local after running zookeeper and kafka in docker.",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "kafkajs": "^2.2.4"
+  }
+}
