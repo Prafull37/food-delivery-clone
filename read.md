@@ -18,3 +18,4 @@ https://medium.com/@ravindersengar/end-to-end-design-of-a-food-delivery-app-like
 [] Auth and Permission
 [] CloudFront Integration
 [] Deployment
+[x] Kafka Setup(Todo On 29-jul-2023 )
